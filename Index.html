@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuovi Piani!</title>
+    <style>
+        /* Impostazioni generali della pagina */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffe4e1;
+            font-family: 'Aptos', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+            transition: background-color 0.8s ease;
+        }
+
+        /* Contenitore centrale stondato */
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            z-index: 10;
+            max-width: 600px;
+            width: 90%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Gestione dei passaggi */
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #000000;
+            font-size: 26px;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+        
+        p.subtitle {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        /* Area e stile dei bottoni base */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            min-height: 60px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 14px 28px; 
+            font-size: 20px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-next {
+            background-color: #4CAF50;
+            color: white;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
+        }
+        .btn-next:hover { transform: scale(1.05); }
+
+        /* Bottoni per la selezione delle date */
+        .btn-option {
+            background-color: #f1f2f6;
+            color: #2f3542;
+            font-size: 16px;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .btn-option:hover { background-color: #dfe4ea; transform: translateY(-2px); }
+        .btn-option.selected {
+            background-color: #1e90ff;
+            color: white;
+            border-color: #0c2461;
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.3);
+        }
+
+        /* Campi di input extra */
+        input[type="text"] {
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid #ccc;
+            font-size: 16px;
+            font-family: inherit;
+            width: 80%;
+            max-width: 300px;
+            margin-top: 15px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1e90ff;
+        }
+
+        /* STILE DELLE CARTE 3D */
+        .cards-container {
+            display: flex;
+            flex-direction: column; /* Una sopra all'altra */
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            width: 260px;
+            height: 140px;
+            perspective: 1000px; /* Crea l'effetto 3D */
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            border-radius: 20px;
+        }
+
+        .card-inner.flipped {
+            transform: rotateX(180deg); /* La carta si capovolge verticalmente */
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .card-front.red { background-color: #ff4757; color: white; }
+        .card-front.blue { background-color: #1e90ff; color: white; }
+
+        .card-back {
+            background-color: white;
+            transform: rotateX(180deg);
+            overflow: hidden;
+        }
+
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Nascondere il bottone avanti finché le carte non sono girate */
+        #btn-avanti-cards {
+            display: none;
+            margin-top: 20px;
+        }
+
+        /* Stile del Riepilogo */
+        .summary-box {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+            border: 2px dashed #1e90ff;
+        }
+        .summary-item {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .summary-item strong {
+            color: #2f3542;
+        }
+
+        /* Emoji fluttuanti */
+        .emoji {
+            position: absolute;
+            user-select: none;
+            animation: floatUp linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="step-intro1" class="step active">
+            <h1>Ciao Giulia! ☺️</h1>
+            <p class="subtitle">Ho due nuove proposte per noi...</p>
+            <div class="buttons">
+                <button class="btn-next" onclick="goToStep('step-intro2', '#e0f7fa')">Continua ➡️</button>
+            </div>
+        </div>
+
+        <div id="step-intro2" class="step">
+            <h1>Sei pronta a scoprire cosa faremo? 🙈</h1>
+            <div class="buttons">
+                <button class="btn-next" onclick="goToStep('step-cards', '#f3e5f5')">Sì, mostrami tutto! ✨</button>
+            </div>
+        </div>
+
+        <div id="step-cards" class="step">
+            <h1>Ecco i due eventi!</h1>
+            
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-inner" id="card1">
+                        <div class="card-front red">?</div>
+                        <div class="card-back">
+                            <img src="https://image.tmdb.org/t/p/original/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg" alt="Toy Story">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-inner" id="card2">
+                        <div class="card-front blue">?</div>
+                        <div class="card-back">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Monviso_da_Pian_del_Re.jpg/800px-Monviso_da_Pian_del_Re.jpg" alt="Monviso">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-next" id="btn-scopri" onclick="scopriCarte()">Scopri le carte 🃏</button>
+            <button class="btn-next" id="btn-avanti-cards" onclick="goToStep('step-cinema', '#fff3e0')">Organizziamo! ➡️</button>
+        </div>
+
+        <div id="step-cinema" class="step">
+            <h1>🎬 Evento 1: Toy Story al Cinema</h1>
+            <p class="subtitle">Quando andiamo a vederlo?</p>
+            
+            <div class="buttons" id="cinema-buttons">
+                <button class="btn-option" onclick="selectCinema('25 Giugno', this)">25 Giugno</button>
+                <button class="btn-option" onclick="selectCinema('26 Giugno (Sera)', this)">26 Giugno (Sera)</button>
+            </div>
+            
+            <input type="text" id="extra-cinema" placeholder="Oppure proponi tu una data..." oninput="handleCinemaExtra(this.value)">
+            
+            <div class="buttons" style="margin-top: 30px;">
+                <button class="btn-next" onclick="goToStep('step-montagna', '#e8f5e9')">Avanti ➡️</button>
+            </div>
+        </div>
+
+        <div id="step-montagna" class="step">
+            <h1>⛰️ Evento 2: Escursione al Monviso</h1>
+            <p class="subtitle" style="font-size: 16px;">(Per il freddo in quota non ti preoccupare, al massimo ti presto il mio guscio dell'Arc'teryx!)</p>
+            <p class="subtitle" style="margin-top:-15px;">Scegli una giornata nella settimana dal 29 Giugno al 5 Luglio:</p>
+            
+            <div class="buttons" id="montagna-buttons" style="gap: 8px;">
+                <button class="btn-option" onclick="selectMountain('29 Giugno', this)">29</button>
+                <button class="btn-option" onclick="selectMountain('30 Giugno', this)">30</button>
+                <button class="btn-option" onclick="selectMountain('1 Luglio', this)">1</button>
+                <button class="btn-option" onclick="selectMountain('2 Luglio', this)">2</button>
+                <button class="btn-option" onclick="selectMountain('3 Luglio', this)">3</button>
+                <button class="btn-option" onclick="selectMountain('4 Luglio', this)">4</button>
+                <button class="btn-option" onclick="selectMountain('5 Luglio', this)">5</button>
+            </div>
+
+            <input type="text" id="extra-montagna" placeholder="O proponi un'altra data..." oninput="handleMountainExtra(this.value)">
+
+            <div class="buttons" style="margin-top: 30px;">
+                <button class="btn-next" onclick="mostraRiepilogo()">Conferma tutto! ✅</button>
+            </div>
+        </div>
+
+        <div id="step-riepilogo" class="step">
+            <h1>🎉 Fantastico!</h1>
+            <p class="subtitle">Ecco il piano che abbiamo organizzato:</p>
+            
+            <div class="summary-box">
+                <div class="summary-item">🎬 <strong>Cinema (Toy Story):</strong> <span id="summary-cinema"></span></div>
+                <div class="summary-item">⛰️ <strong>Montagna (Monviso):</strong> <span id="summary-mountain"></span></div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn-next" onclick="window.location.reload()">Ricominciamo 🔄</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // VARIABILI PER SALVARE LE SCELTE
+        let choiceCinema = "Da decidere";
+        let choiceMountain = "Da decidere";
+
+        // FUNZIONE NAVIGAZIONE
+        function goToStep(stepId, bgColor) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+            if (bgColor) document.body.style.backgroundColor = bgColor;
+        }
+
+        // FUNZIONE CARTE 3D
+        function scopriCarte() {
+            // Aggiunge la classe flipped per innescare l'animazione CSS
+            document.getElementById('card1').classList.add('flipped');
+            
+            // Ritarda un attimo la seconda carta per un effetto più bello
+            setTimeout(() => {
+                document.getElementById('card2').classList.add('flipped');
+            }, 300);
+
+            // Nasconde il tasto "scopri" e mostra "avanti"
+            document.getElementById('btn-scopri').style.display = 'none';
+            setTimeout(() => {
+                document.getElementById('btn-avanti-cards').style.display = 'inline-block';
+            }, 1000);
+        }
+
+        // LOGICA SELEZIONE CINEMA
+        function selectCinema(choice, element) {
+            choiceCinema = choice;
+            // Rimuove la selezione da tutti i bottoni
+            document.querySelectorAll('#cinema-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
+            // Aggiunge la selezione al bottone cliccato
+            element.classList.add('selected');
+            // Svuota il campo extra se usa un bottone
+            document.getElementById('extra-cinema').value = '';
+        }
+
+        function handleCinemaExtra(val) {
+            choiceCinema = val || "Da decidere";
+            // Deseleziona i bottoni se inizia a scrivere
+            document.querySelectorAll('#cinema-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
+        }
+
+        // LOGICA SELEZIONE MONTAGNA
+        function selectMountain(choice, element) {
+            choiceMountain = choice;
+            document.querySelectorAll('#montagna-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('extra-montagna').value = '';
+        }
+
+        function handleMountainExtra(val) {
+            choiceMountain = val || "Da decidere";
+            document.querySelectorAll('#montagna-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
+        }
+
+        // MOSTRA RIEPILOGO FINALE
+        function mostraRiepilogo() {
+            document.getElementById('summary-cinema').innerText = choiceCinema;
+            document.getElementById('summary-mountain').innerText = choiceMountain;
+            goToStep('step-riepilogo', '#e8eaf6');
+        }
+
+        // LOGICA EMOJI FLUTTUANTI A TEMA
+        const emojis = ['🍿', '⛰️', '🎬', '🥾'];
+        
+        function createEmoji() {
+            const emojiEl = document.createElement('div');
+            emojiEl.classList.add('emoji');
+            emojiEl.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            emojiEl.style.left = Math.random() * 100 + 'vw';
+            
+            const duration = Math.random() * 4 + 4;
+            emojiEl.style.animationDuration = duration + 's';
+            
+            const size = Math.random() * 20 + 25;
+            emojiEl.style.fontSize = size + 'px';
+            
+            document.body.appendChild(emojiEl);
+            setTimeout(() => { emojiEl.remove(); }, duration * 1000);
+        }
+
+        setInterval(createEmoji, 250); // Un pochino più lente per non distrarre troppo dalla grafica
+    </script>
+
+</body>
+</html>
