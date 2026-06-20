@@ -89,7 +89,7 @@
         }
         .btn-next:hover { transform: scale(1.05); }
 
-        /* Bottoni per la selezione delle date */
+        /* Bottoni opzioni (Cinema) */
         .btn-option {
             background-color: #f1f2f6;
             color: #2f3542;
@@ -123,10 +123,10 @@
             border-color: #1e90ff;
         }
 
-        /* ----- STILE DELLE CARTE 3D (VERE CARTE DA GIOCO) ----- */
+        /* ----- STILE DELLE CARTE 3D ----- */
         .cards-container {
             display: flex;
-            flex-direction: row; /* Carte affiancate */
+            flex-direction: row;
             justify-content: center;
             flex-wrap: wrap;
             gap: 20px;
@@ -135,7 +135,7 @@
 
         .card {
             width: 150px;
-            height: 210px; /* Proporzioni perfette per carte da gioco */
+            height: 210px;
             perspective: 1000px; 
         }
 
@@ -150,7 +150,7 @@
         }
 
         .card-inner.flipped {
-            transform: rotateY(180deg); /* Ruota lateralmente come una vera carta */
+            transform: rotateY(180deg);
         }
 
         .card-front, .card-back {
@@ -159,13 +159,12 @@
             height: 100%;
             backface-visibility: hidden;
             border-radius: 12px;
-            background-color: white; /* Il bordo bianco tipico delle carte reali */
-            padding: 8px; /* Crea il margine per il bordo */
+            background-color: white;
+            padding: 8px;
             box-sizing: border-box;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Ombra per dare spessore */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        /* Contenuto colorato del retro della carta */
         .card-front-content {
             width: 100%;
             height: 100%;
@@ -176,7 +175,6 @@
             font-size: 50px;
             font-weight: bold;
             color: white;
-            /* Aggiunge un motivo a rombi semitrasparente molto elegante */
             background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.15) 75%, rgba(255,255,255,0.15)),
                               linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.15) 75%, rgba(255,255,255,0.15));
             background-size: 16px 16px;
@@ -194,13 +192,74 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 6px; /* Si adatta al bordo bianco interno */
+            border-radius: 6px;
         }
 
-        /* Nascondere il bottone avanti finché le carte non sono girate */
         #btn-avanti-cards {
             display: none;
             margin-top: 20px;
+        }
+
+        /* ----- STILE DEL CALENDARIO ----- */
+        .calendar-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin: 0 auto 15px auto;
+            max-width: 340px;
+        }
+        .calendar-header {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2f3542;
+        }
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            font-weight: bold;
+            font-size: 14px;
+            color: #747d8c;
+            margin-bottom: 10px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+        .cal-day {
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 10px 0;
+            font-size: 16px;
+            cursor: pointer;
+            color: #2f3542;
+            transition: all 0.2s;
+        }
+        .cal-day:hover {
+            background: #f1f2f6;
+            transform: translateY(-2px);
+        }
+        .cal-day.other-month {
+            color: #a4b0be; /* Giorni del mese precedente/successivo */
+        }
+        .cal-day.highlight {
+            background: #fff9c4; /* Giallo tenue per risaltare la settimana */
+            border-color: #ffda79;
+            font-weight: bold;
+            color: #d35400; 
+        }
+        .cal-day.highlight:hover {
+            background: #ffeaa7;
+        }
+        .cal-day.selected {
+            background: #1e90ff !important;
+            color: white !important;
+            border-color: #0c2461 !important;
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.3);
+            font-weight: bold;
         }
 
         /* Stile del Riepilogo */
@@ -303,21 +362,50 @@
         <div id="step-montagna" class="step">
             <h1>⛰️ Evento 2: Escursione al Monviso</h1>
             <p class="subtitle" style="font-size: 16px;">(Per il freddo in quota non ti preoccupare, al massimo ti presto il mio guscio dell'Arc'teryx!)</p>
-            <p class="subtitle" style="margin-top:-15px;">Scegli una giornata nella settimana dal 29 Giugno al 5 Luglio:</p>
             
-            <div class="buttons" id="montagna-buttons" style="gap: 8px;">
-                <button class="btn-option" onclick="selectMountain('29 Giugno', this)">29</button>
-                <button class="btn-option" onclick="selectMountain('30 Giugno', this)">30</button>
-                <button class="btn-option" onclick="selectMountain('1 Luglio', this)">1</button>
-                <button class="btn-option" onclick="selectMountain('2 Luglio', this)">2</button>
-                <button class="btn-option" onclick="selectMountain('3 Luglio', this)">3</button>
-                <button class="btn-option" onclick="selectMountain('4 Luglio', this)">4</button>
-                <button class="btn-option" onclick="selectMountain('5 Luglio', this)">5</button>
+            <div class="calendar-container">
+                <div class="calendar-header">Giugno / Luglio 2026</div>
+                <div class="calendar-weekdays">
+                    <span>Lu</span><span>Ma</span><span>Me</span><span>Gi</span><span>Ve</span><span>Sa</span><span>Do</span>
+                </div>
+                <div class="calendar-grid">
+                    <button class="cal-day other-month highlight" onclick="selectMountain('29 Giugno', this)">29</button>
+                    <button class="cal-day other-month highlight" onclick="selectMountain('30 Giugno', this)">30</button>
+                    <button class="cal-day highlight" onclick="selectMountain('1 Luglio', this)">1</button>
+                    <button class="cal-day highlight" onclick="selectMountain('2 Luglio', this)">2</button>
+                    <button class="cal-day highlight" onclick="selectMountain('3 Luglio', this)">3</button>
+                    <button class="cal-day highlight" onclick="selectMountain('4 Luglio', this)">4</button>
+                    <button class="cal-day highlight" onclick="selectMountain('5 Luglio', this)">5</button>
+
+                    <button class="cal-day" onclick="selectMountain('6 Luglio', this)">6</button>
+                    <button class="cal-day" onclick="selectMountain('7 Luglio', this)">7</button>
+                    <button class="cal-day" onclick="selectMountain('8 Luglio', this)">8</button>
+                    <button class="cal-day" onclick="selectMountain('9 Luglio', this)">9</button>
+                    <button class="cal-day" onclick="selectMountain('10 Luglio', this)">10</button>
+                    <button class="cal-day" onclick="selectMountain('11 Luglio', this)">11</button>
+                    <button class="cal-day" onclick="selectMountain('12 Luglio', this)">12</button>
+
+                    <button class="cal-day" onclick="selectMountain('13 Luglio', this)">13</button>
+                    <button class="cal-day" onclick="selectMountain('14 Luglio', this)">14</button>
+                    <button class="cal-day" onclick="selectMountain('15 Luglio', this)">15</button>
+                    <button class="cal-day" onclick="selectMountain('16 Luglio', this)">16</button>
+                    <button class="cal-day" onclick="selectMountain('17 Luglio', this)">17</button>
+                    <button class="cal-day" onclick="selectMountain('18 Luglio', this)">18</button>
+                    <button class="cal-day" onclick="selectMountain('19 Luglio', this)">19</button>
+
+                    <button class="cal-day" onclick="selectMountain('20 Luglio', this)">20</button>
+                    <button class="cal-day" onclick="selectMountain('21 Luglio', this)">21</button>
+                    <button class="cal-day" onclick="selectMountain('22 Luglio', this)">22</button>
+                    <button class="cal-day" onclick="selectMountain('23 Luglio', this)">23</button>
+                    <button class="cal-day" onclick="selectMountain('24 Luglio', this)">24</button>
+                    <button class="cal-day" onclick="selectMountain('25 Luglio', this)">25</button>
+                    <button class="cal-day" onclick="selectMountain('26 Luglio', this)">26</button>
+                </div>
             </div>
 
             <input type="text" id="extra-montagna" placeholder="O proponi un'altra data..." oninput="handleMountainExtra(this.value)">
 
-            <div class="buttons" style="margin-top: 30px;">
+            <div class="buttons" style="margin-top: 20px;">
                 <button class="btn-next" onclick="mostraRiepilogo()">Conferma tutto! ✅</button>
             </div>
         </div>
@@ -352,7 +440,6 @@
 
         // FUNZIONE CARTE 3D
         function scopriCarte() {
-            // Animazione stile "pesca la carta"
             document.getElementById('card1').classList.add('flipped');
             
             setTimeout(() => {
@@ -378,17 +465,19 @@
             document.querySelectorAll('#cinema-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
         }
 
-        // LOGICA SELEZIONE MONTAGNA
+        // LOGICA SELEZIONE MONTAGNA (Dal Calendario)
         function selectMountain(choice, element) {
             choiceMountain = choice;
-            document.querySelectorAll('#montagna-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
+            // Rimuove la selezione da tutti i giorni del calendario
+            document.querySelectorAll('.cal-day').forEach(btn => btn.classList.remove('selected'));
             element.classList.add('selected');
             document.getElementById('extra-montagna').value = '';
         }
 
         function handleMountainExtra(val) {
             choiceMountain = val || "Da decidere";
-            document.querySelectorAll('#montagna-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
+            // Deseleziona il calendario se inizia a scrivere
+            document.querySelectorAll('.cal-day').forEach(btn => btn.classList.remove('selected'));
         }
 
         // MOSTRA RIEPILOGO FINALE
