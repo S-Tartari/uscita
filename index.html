@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuovi Piani!</title>
+    <title>Proposte!</title>
     <style>
         /* Impostazioni generali della pagina */
         body {
@@ -356,8 +356,8 @@
     <div class="container">
         
         <div id="step-intro1" class="step active">
-            <h1>Ciao Giulia! ☺️</h1>
-            <p class="subtitle">Ho due nuove proposte per noi...</p>
+            <h1>Ciao Giuggii ☺️</h1>
+            <p class="subtitle">Eccomi qui a proporti delle cosine...</p>
             <div class="buttons">
                 <button class="btn-next" onclick="goToStep('step-intro2')">Continua ➡️</button>
             </div>
@@ -366,12 +366,12 @@
         <div id="step-intro2" class="step">
             <h1>Sei pronta a scoprire cosa faremo? 🙈</h1>
             <div class="buttons">
-                <button class="btn-next" onclick="goToStep('step-cards')">Sì, mostrami tutto! ✨</button>
+                <button class="btn-next" onclick="goToStep('step-cards')">Sì, ma ho paura! ✨</button>
             </div>
         </div>
 
         <div id="step-cards" class="step">
-            <h1>Ecco i due eventi!</h1>
+            <h1>Sorpresaa😳</h1>
             
             <div class="cards-container">
                 <div class="card">
@@ -380,7 +380,7 @@
                             <div class="card-front-content red">?</div>
                         </div>
                         <div class="card-back">
-                            <img src="https://image.tmdb.org/t/p/original/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg" alt="Toy Story">
+                            <img src="https://lumiere-a.akamaihd.net/v1/images/image_868db92c.jpeg?region=0%2C0%2C540%2C810" alt="Toy Story">
                         </div>
                     </div>
                 </div>
@@ -391,26 +391,26 @@
                             <div class="card-front-content blue">?</div>
                         </div>
                         <div class="card-back">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Monviso_da_Pian_del_Re.jpg/800px-Monviso_da_Pian_del_Re.jpg" alt="Monviso">
+                            <img src="https://www.adventuredreamers.com/wp-content/uploads/2024/03/monviso-1.jpg" alt="Monviso">
                         </div>
                     </div>
                 </div>
             </div>
 
             <button class="btn-next" id="btn-scopri" onclick="scopriCarte()">Scopri le carte 🃏</button>
-            <button class="btn-next" id="btn-avanti-cards" onclick="goToStep('step-cinema')">Organizziamo! ➡️</button>
+            <button class="btn-next" id="btn-avanti-cards" onclick="goToStep('step-cinema')">Vai! ➡️</button>
         </div>
 
         <div id="step-cinema" class="step">
-            <h1>🎬 Evento 1: Toy Story al Cinema</h1>
+            <h1>🎬 Toy Story5 al Cinema</h1>
             <p class="subtitle">Quando andiamo a vederlo?</p>
             
             <div class="buttons" id="cinema-buttons">
                 <button class="btn-option" onclick="selectCinema('25 Giugno', this)">25 Giugno</button>
-                <button class="btn-option" onclick="selectCinema('26 Giugno (Sera)', this)">26 Giugno (Sera)</button>
+                <button class="btn-option" onclick="selectCinema('26 Giugno', this)">26 Giugno</button>
             </div>
             
-            <input type="text" id="extra-cinema" placeholder="Oppure proponi tu una data..." oninput="handleCinemaExtra(this.value)">
+            <input type="text" id="extra-cinema" placeholder="Oppure proponi una data..." oninput="handleCinemaExtra(this.value)">
             
             <div class="buttons" style="margin-top: 30px;">
                 <button class="btn-next" onclick="goToStep('step-montagna')">Avanti ➡️</button>
@@ -418,8 +418,8 @@
         </div>
 
         <div id="step-montagna" class="step">
-            <h1>⛰️ Evento 2: Escursione al Monviso</h1>
-            <p class="subtitle" style="font-size: 16px;">(Per il freddo in quota non ti preoccupare, al massimo ti presto il mio guscio dell'Arc'teryx!)</p>
+            <h1>⛰️ Montagnina</h1>
+            <p class="subtitle" style="font-size: 16px;">(Almeno andiamo a prendere del fresco in alta quota🥶)</p>
             
             <div class="calendar-container">
                 <div class="calendar-header">Giugno / Luglio 2026</div>
@@ -464,17 +464,17 @@
             <input type="text" id="extra-montagna" placeholder="O proponi un'altra data..." oninput="handleMountainExtra(this.value)">
 
             <div class="buttons" style="margin-top: 20px;">
-                <button class="btn-next" onclick="mostraRiepilogo()">Conferma tutto! ✅</button>
+                <button class="btn-next" onclick="mostraRiepilogo()">Finito✅</button>
             </div>
         </div>
 
         <div id="step-riepilogo" class="step">
-            <h1>🎉 Fantastico!</h1>
-            <p class="subtitle">Ecco il piano che abbiamo organizzato:</p>
+            <h1>🎉Riepilogo</h1>
+            <p class="subtitle">Le tue scelte:</p>
             
             <div class="summary-box">
-                <div class="summary-item">🎬 <strong>Cinema (Toy Story):</strong> <span id="summary-cinema"></span></div>
-                <div class="summary-item">⛰️ <strong>Montagna (Monviso):</strong> <span id="summary-mountain"></span></div>
+                <div class="summary-item">🎬 <strong>Cinema:</strong> <span id="summary-cinema"></span></div>
+                <div class="summary-item">⛰️ <strong>Montagnina:</strong> <span id="summary-mountain"></span></div>
             </div>
 
             <div class="buttons">
