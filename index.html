@@ -147,7 +147,7 @@
         }
         .btn-next:hover { transform: scale(1.05); }
 
-        /* Nuovo Tasto WhatsApp */
+        /* Tasto WhatsApp */
         .btn-whatsapp {
             background-color: #25D366;
             color: white;
@@ -472,7 +472,7 @@
         </div>
 
         <div id="step-riepilogo" class="step">
-            <h1>🎉Riepilogo</h1>
+            <h1>🎉 Riepilogo</h1>
             <p class="subtitle">Le tue scelte:</p>
             
             <div class="summary-box">
@@ -481,6 +481,7 @@
             </div>
 
             <div class="buttons">
+                <!-- QUI HO AGGIUNTO IL BOTTONE WHATSAPP -->
                 <button class="btn-whatsapp" onclick="inviaWhatsApp()">Invia a me! 💬</button>
                 <button class="btn-next" onclick="window.location.reload()">Ricominciamo 🔄</button>
             </div>
@@ -558,19 +559,23 @@
             goToStep('step-riepilogo');
         }
 
-        // ----- NUOVA FUNZIONE WHATSAPP -----
+        // ----- FUNZIONE WHATSAPP BLINDATA -----
         function inviaWhatsApp() {
-            // SOSTITUISCI LA SCRITTA QUI SOTTO CON IL TUO NUMERO DI TELEFONO
-            // Ricordati di mettere il 39 davanti senza il + (es: "393401234567")
+            // INSERISCI QUI IL TUO NUMERO SENZA IL "+" E CON IL 39 DAVANTI
             const numeroDiTelefono = "393473274100"; 
             
-            // Crea il messaggio precompilato
-            const messaggio = `Riepilogo☺️: \n\n🎬 ToyStory: ${choiceCinema}\n⛰️ Montagnina: ${choiceMountain}`;
+            // Usiamo i codici universali Unicode per essere certi che l'emoji non si corrompa MAI
+            const emojiSorriso = '\u263A\uFE0F';
+            const emojiCinema = '\uD83C\uDFAC';
+            const emojiMontagna = '\u26F0\uFE0F';
             
-            // Codifica il testo per usarlo nell'URL
+            // Costruzione del messaggio
+            const messaggio = `Ciao! ${emojiSorriso} Ecco le date che ho scelto:\n\n${emojiCinema} Cinema: ${choiceCinema}\n${emojiMontagna} Montagnina: ${choiceMountain}\n\nNon vedo l'ora!`;
+            
+            // Codifica sicura per i link
             const messaggioCodificato = encodeURIComponent(messaggio);
             
-            // Genera il link e lo apre in una nuova scheda
+            // Reindirizzamento a WhatsApp
             const urlWhatsApp = `https://wa.me/${numeroDiTelefono}?text=${messaggioCodificato}`;
             window.open(urlWhatsApp, '_blank');
         }
