@@ -18,7 +18,7 @@
             position: relative;
         }
 
-        /* ----- EFFETTO LIQUID COLOR (MESH GRADIENT) ----- */
+        /* ----- EFFETTO LIQUID COLOR (ANIMATO E DEFORMATO) ----- */
         .liquid-bg {
             position: fixed;
             top: 0;
@@ -27,71 +27,69 @@
             height: 100vh;
             z-index: 0;
             overflow: hidden;
-            /* Colore di base iniziale (Rosa pastello) */
             background-color: #ffe4e1;
             transition: background-color 1.5s ease;
-            filter: blur(80px); /* L'alta sfocatura fonde i colori rendendoli liquidi */
-            -webkit-filter: blur(80px);
-            transform: translate3d(0, 0, 0); /* Ottimizzazione per schede grafiche */
+            filter: blur(60px); /* Sfocatura per fondere le forme */
+            -webkit-filter: blur(60px);
+            transform: translate3d(0, 0, 0);
         }
 
         .blob {
             position: absolute;
-            border-radius: 50%;
-            opacity: 0.8;
+            opacity: 0.85;
             transition: background-color 1.5s ease;
         }
 
-        /* Sfera 1 - In alto a sinistra */
+        /* Sfera 1 - Deformazione e rotazione */
         .blob1 {
-            width: 55vw;
-            height: 55vw;
-            top: -15%;
+            width: 60vw;
+            height: 60vw;
+            top: -10%;
             left: -10%;
             background-color: #ffb6c1;
-            animation: float1 12s infinite alternate ease-in-out;
+            animation: liquid1 8s infinite alternate ease-in-out;
         }
 
-        /* Sfera 2 - In basso a destra */
+        /* Sfera 2 - Deformazione e rotazione */
         .blob2 {
-            width: 65vw;
-            height: 65vw;
+            width: 70vw;
+            height: 70vw;
             bottom: -20%;
-            right: -15%;
+            right: -10%;
             background-color: #ffdab9;
-            animation: float2 14s infinite alternate ease-in-out;
+            animation: liquid2 10s infinite alternate ease-in-out;
         }
 
-        /* Sfera 3 - Centrale / Spostata */
+        /* Sfera 3 - Deformazione e rotazione */
         .blob3 {
-            width: 50vw;
-            height: 50vw;
+            width: 55vw;
+            height: 55vw;
             top: 20%;
-            left: 25%;
+            left: 20%;
             background-color: #fffacd;
-            animation: float3 16s infinite alternate ease-in-out;
+            animation: liquid3 12s infinite alternate ease-in-out;
         }
 
-        /* Animazioni di fluttuazione delle sfere */
-        @keyframes float1 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(15vw, 15vh) scale(1.1); }
+        /* Animazioni fluide con morphing dei bordi */
+        @keyframes liquid1 {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            100% { transform: translate(30vw, 20vh) scale(1.2) rotate(90deg); border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
         }
-        @keyframes float2 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-10vw, -15vh) scale(1.2); }
+        @keyframes liquid2 {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
+            100% { transform: translate(-30vw, -20vh) scale(1.3) rotate(-90deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
         }
-        @keyframes float3 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-15vw, 10vh) scale(0.9); }
+        @keyframes liquid3 {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
+            100% { transform: translate(-20vw, 30vh) scale(0.9) rotate(180deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
         }
 
-        /* Contenitore centrale stondato */
+        /* Contenitore centrale stondato (ora più trasparente) */
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.85); /* Leggermente più trasparente per far risaltare il liquido */
-            backdrop-filter: blur(10px); /* Effetto vetro smerigliato moderno */
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.7); /* Maggiore trasparenza per far vedere i fluidi */
+            backdrop-filter: blur(12px); /* Effetto vetro opaco */
+            -webkit-backdrop-filter: blur(12px);
             padding: 40px;
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
@@ -183,6 +181,7 @@
             margin-top: 15px;
             text-align: center;
             transition: border-color 0.3s;
+            background: rgba(255, 255, 255, 0.8);
         }
         input[type="text"]:focus {
             outline: none;
@@ -268,7 +267,7 @@
 
         /* ----- STILE DEL CALENDARIO ----- */
         .calendar-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
@@ -330,7 +329,7 @@
 
         /* Stile del Riepilogo */
         .summary-box {
-            background-color: #f8f9fa;
+            background-color: rgba(248, 249, 250, 0.85);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 25px;
@@ -348,17 +347,14 @@
 </head>
 <body>
 
-    <!-- Sfondo Animato Liquido -->
     <div class="liquid-bg" id="liquid-bg">
         <div class="blob blob1" id="blob1"></div>
         <div class="blob blob2" id="blob2"></div>
         <div class="blob blob3" id="blob3"></div>
     </div>
 
-    <!-- Contenitore Principale -->
     <div class="container">
         
-        <!-- INTRO 1 -->
         <div id="step-intro1" class="step active">
             <h1>Ciao Giulia! ☺️</h1>
             <p class="subtitle">Ho due nuove proposte per noi...</p>
@@ -367,7 +363,6 @@
             </div>
         </div>
 
-        <!-- INTRO 2 -->
         <div id="step-intro2" class="step">
             <h1>Sei pronta a scoprire cosa faremo? 🙈</h1>
             <div class="buttons">
@@ -375,7 +370,6 @@
             </div>
         </div>
 
-        <!-- PAGINA DELLE CARTE -->
         <div id="step-cards" class="step">
             <h1>Ecco i due eventi!</h1>
             
@@ -407,7 +401,6 @@
             <button class="btn-next" id="btn-avanti-cards" onclick="goToStep('step-cinema')">Organizziamo! ➡️</button>
         </div>
 
-        <!-- PAGINA ORGANIZZAZIONE: CINEMA -->
         <div id="step-cinema" class="step">
             <h1>🎬 Evento 1: Toy Story al Cinema</h1>
             <p class="subtitle">Quando andiamo a vederlo?</p>
@@ -424,7 +417,6 @@
             </div>
         </div>
 
-        <!-- PAGINA ORGANIZZAZIONE: MONTAGNA -->
         <div id="step-montagna" class="step">
             <h1>⛰️ Evento 2: Escursione al Monviso</h1>
             <p class="subtitle" style="font-size: 16px;">(Per il freddo in quota non ti preoccupare, al massimo ti presto il mio guscio dell'Arc'teryx!)</p>
@@ -476,7 +468,6 @@
             </div>
         </div>
 
-        <!-- PAGINA RIEPILOGO -->
         <div id="step-riepilogo" class="step">
             <h1>🎉 Fantastico!</h1>
             <p class="subtitle">Ecco il piano che abbiamo organizzato:</p>
@@ -499,12 +490,12 @@
 
         // Mappatura delle palette colori per ogni step [Sfondo, Sfera1, Sfera2, Sfera3]
         const colorPalettes = {
-            'step-intro1':  ['#ffe4e1', '#ffb6c1', '#ffdab9', '#fffacd'], // Rosa caldo/Pesca
-            'step-intro2':  ['#e0f7fa', '#b2ebf2', '#b2dfdb', '#e1bee7'], // Ciano/Menta/Lilla
-            'step-cards':   ['#f3e5f5', '#e1bee7', '#f8bbd0', '#bbdefb'], // Lilla/Rosa/Azzurro
-            'step-cinema':  ['#fff3e0', '#ffe0b2', '#fff59d', '#ffccbc'], // Arancio/Giallo
-            'step-montagna':['#e8f5e9', '#c8e6c9', '#b3e5fc', '#f0f4c3'], // Verde Menta/Azzurro
-            'step-riepilogo':['#e8eaf6', '#c5cae9', '#d1c4e9', '#b2dfdb'] // Indaco/Azzurro/Menta
+            'step-intro1':  ['#ffe4e1', '#ffb6c1', '#ffdab9', '#fffacd'], 
+            'step-intro2':  ['#e0f7fa', '#b2ebf2', '#b2dfdb', '#e1bee7'], 
+            'step-cards':   ['#f3e5f5', '#e1bee7', '#f8bbd0', '#bbdefb'], 
+            'step-cinema':  ['#fff3e0', '#ffe0b2', '#fff59d', '#ffccbc'], 
+            'step-montagna':['#e8f5e9', '#c8e6c9', '#b3e5fc', '#f0f4c3'], 
+            'step-riepilogo':['#e8eaf6', '#c5cae9', '#d1c4e9', '#b2dfdb'] 
         };
 
         function updateLiquidColors(stepId) {
@@ -518,10 +509,10 @@
         function goToStep(stepId) {
             document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
             document.getElementById(stepId).classList.add('active');
-            updateLiquidColors(stepId); // Cambia il colore fluido
+            updateLiquidColors(stepId); 
         }
 
-        // Inizializza i colori all'apertura
+        // Inizializza i colori
         updateLiquidColors('step-intro1');
 
         function scopriCarte() {
