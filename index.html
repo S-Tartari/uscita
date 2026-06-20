@@ -13,20 +13,88 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffe4e1;
             font-family: 'Aptos', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
             position: relative;
-            transition: background-color 0.8s ease;
+        }
+
+        /* ----- EFFETTO LIQUID COLOR (MESH GRADIENT) ----- */
+        .liquid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            overflow: hidden;
+            /* Colore di base iniziale (Rosa pastello) */
+            background-color: #ffe4e1;
+            transition: background-color 1.5s ease;
+            filter: blur(80px); /* L'alta sfocatura fonde i colori rendendoli liquidi */
+            -webkit-filter: blur(80px);
+            transform: translate3d(0, 0, 0); /* Ottimizzazione per schede grafiche */
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.8;
+            transition: background-color 1.5s ease;
+        }
+
+        /* Sfera 1 - In alto a sinistra */
+        .blob1 {
+            width: 55vw;
+            height: 55vw;
+            top: -15%;
+            left: -10%;
+            background-color: #ffb6c1;
+            animation: float1 12s infinite alternate ease-in-out;
+        }
+
+        /* Sfera 2 - In basso a destra */
+        .blob2 {
+            width: 65vw;
+            height: 65vw;
+            bottom: -20%;
+            right: -15%;
+            background-color: #ffdab9;
+            animation: float2 14s infinite alternate ease-in-out;
+        }
+
+        /* Sfera 3 - Centrale / Spostata */
+        .blob3 {
+            width: 50vw;
+            height: 50vw;
+            top: 20%;
+            left: 25%;
+            background-color: #fffacd;
+            animation: float3 16s infinite alternate ease-in-out;
+        }
+
+        /* Animazioni di fluttuazione delle sfere */
+        @keyframes float1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(15vw, 15vh) scale(1.1); }
+        }
+        @keyframes float2 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-10vw, -15vh) scale(1.2); }
+        }
+        @keyframes float3 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-15vw, 10vh) scale(0.9); }
         }
 
         /* Contenitore centrale stondato */
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.85); /* Leggermente più trasparente per far risaltare il liquido */
+            backdrop-filter: blur(10px); /* Effetto vetro smerigliato moderno */
+            -webkit-backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             z-index: 10;
             max-width: 600px;
             width: 90%;
@@ -35,16 +103,14 @@
         }
 
         /* Gestione dei passaggi */
-        .step {
-            display: none;
-        }
+        .step { display: none; }
         .step.active {
             display: block;
-            animation: fadeIn 0.5s ease forwards;
+            animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -243,10 +309,10 @@
             transform: translateY(-2px);
         }
         .cal-day.other-month {
-            color: #a4b0be; /* Giorni del mese precedente/successivo */
+            color: #a4b0be; 
         }
         .cal-day.highlight {
-            background: #fff9c4; /* Giallo tenue per risaltare la settimana */
+            background: #fff9c4; 
             border-color: #ffda79;
             font-weight: bold;
             color: #d35400; 
@@ -278,40 +344,38 @@
         .summary-item strong {
             color: #2f3542;
         }
-
-        /* Emoji fluttuanti */
-        .emoji {
-            position: absolute;
-            user-select: none;
-            animation: floatUp linear forwards;
-            z-index: 1;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
-        }
     </style>
 </head>
 <body>
 
+    <!-- Sfondo Animato Liquido -->
+    <div class="liquid-bg" id="liquid-bg">
+        <div class="blob blob1" id="blob1"></div>
+        <div class="blob blob2" id="blob2"></div>
+        <div class="blob blob3" id="blob3"></div>
+    </div>
+
+    <!-- Contenitore Principale -->
     <div class="container">
         
+        <!-- INTRO 1 -->
         <div id="step-intro1" class="step active">
             <h1>Ciao Giulia! ☺️</h1>
             <p class="subtitle">Ho due nuove proposte per noi...</p>
             <div class="buttons">
-                <button class="btn-next" onclick="goToStep('step-intro2', '#e0f7fa')">Continua ➡️</button>
+                <button class="btn-next" onclick="goToStep('step-intro2')">Continua ➡️</button>
             </div>
         </div>
 
+        <!-- INTRO 2 -->
         <div id="step-intro2" class="step">
             <h1>Sei pronta a scoprire cosa faremo? 🙈</h1>
             <div class="buttons">
-                <button class="btn-next" onclick="goToStep('step-cards', '#f3e5f5')">Sì, mostrami tutto! ✨</button>
+                <button class="btn-next" onclick="goToStep('step-cards')">Sì, mostrami tutto! ✨</button>
             </div>
         </div>
 
+        <!-- PAGINA DELLE CARTE -->
         <div id="step-cards" class="step">
             <h1>Ecco i due eventi!</h1>
             
@@ -340,9 +404,10 @@
             </div>
 
             <button class="btn-next" id="btn-scopri" onclick="scopriCarte()">Scopri le carte 🃏</button>
-            <button class="btn-next" id="btn-avanti-cards" onclick="goToStep('step-cinema', '#fff3e0')">Organizziamo! ➡️</button>
+            <button class="btn-next" id="btn-avanti-cards" onclick="goToStep('step-cinema')">Organizziamo! ➡️</button>
         </div>
 
+        <!-- PAGINA ORGANIZZAZIONE: CINEMA -->
         <div id="step-cinema" class="step">
             <h1>🎬 Evento 1: Toy Story al Cinema</h1>
             <p class="subtitle">Quando andiamo a vederlo?</p>
@@ -355,10 +420,11 @@
             <input type="text" id="extra-cinema" placeholder="Oppure proponi tu una data..." oninput="handleCinemaExtra(this.value)">
             
             <div class="buttons" style="margin-top: 30px;">
-                <button class="btn-next" onclick="goToStep('step-montagna', '#e8f5e9')">Avanti ➡️</button>
+                <button class="btn-next" onclick="goToStep('step-montagna')">Avanti ➡️</button>
             </div>
         </div>
 
+        <!-- PAGINA ORGANIZZAZIONE: MONTAGNA -->
         <div id="step-montagna" class="step">
             <h1>⛰️ Evento 2: Escursione al Monviso</h1>
             <p class="subtitle" style="font-size: 16px;">(Per il freddo in quota non ti preoccupare, al massimo ti presto il mio guscio dell'Arc'teryx!)</p>
@@ -410,6 +476,7 @@
             </div>
         </div>
 
+        <!-- PAGINA RIEPILOGO -->
         <div id="step-riepilogo" class="step">
             <h1>🎉 Fantastico!</h1>
             <p class="subtitle">Ecco il piano che abbiamo organizzato:</p>
@@ -427,32 +494,47 @@
     </div>
 
     <script>
-        // VARIABILI PER SALVARE LE SCELTE
         let choiceCinema = "Da decidere";
         let choiceMountain = "Da decidere";
 
-        // FUNZIONE NAVIGAZIONE
-        function goToStep(stepId, bgColor) {
-            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-            document.getElementById(stepId).classList.add('active');
-            if (bgColor) document.body.style.backgroundColor = bgColor;
+        // Mappatura delle palette colori per ogni step [Sfondo, Sfera1, Sfera2, Sfera3]
+        const colorPalettes = {
+            'step-intro1':  ['#ffe4e1', '#ffb6c1', '#ffdab9', '#fffacd'], // Rosa caldo/Pesca
+            'step-intro2':  ['#e0f7fa', '#b2ebf2', '#b2dfdb', '#e1bee7'], // Ciano/Menta/Lilla
+            'step-cards':   ['#f3e5f5', '#e1bee7', '#f8bbd0', '#bbdefb'], // Lilla/Rosa/Azzurro
+            'step-cinema':  ['#fff3e0', '#ffe0b2', '#fff59d', '#ffccbc'], // Arancio/Giallo
+            'step-montagna':['#e8f5e9', '#c8e6c9', '#b3e5fc', '#f0f4c3'], // Verde Menta/Azzurro
+            'step-riepilogo':['#e8eaf6', '#c5cae9', '#d1c4e9', '#b2dfdb'] // Indaco/Azzurro/Menta
+        };
+
+        function updateLiquidColors(stepId) {
+            const colors = colorPalettes[stepId] || colorPalettes['step-intro1'];
+            document.getElementById('liquid-bg').style.backgroundColor = colors[0];
+            document.getElementById('blob1').style.backgroundColor = colors[1];
+            document.getElementById('blob2').style.backgroundColor = colors[2];
+            document.getElementById('blob3').style.backgroundColor = colors[3];
         }
 
-        // FUNZIONE CARTE 3D
+        function goToStep(stepId) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+            updateLiquidColors(stepId); // Cambia il colore fluido
+        }
+
+        // Inizializza i colori all'apertura
+        updateLiquidColors('step-intro1');
+
         function scopriCarte() {
             document.getElementById('card1').classList.add('flipped');
-            
             setTimeout(() => {
                 document.getElementById('card2').classList.add('flipped');
             }, 300);
-
             document.getElementById('btn-scopri').style.display = 'none';
             setTimeout(() => {
                 document.getElementById('btn-avanti-cards').style.display = 'inline-block';
             }, 1000);
         }
 
-        // LOGICA SELEZIONE CINEMA
         function selectCinema(choice, element) {
             choiceCinema = choice;
             document.querySelectorAll('#cinema-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
@@ -465,10 +547,8 @@
             document.querySelectorAll('#cinema-buttons .btn-option').forEach(btn => btn.classList.remove('selected'));
         }
 
-        // LOGICA SELEZIONE MONTAGNA (Dal Calendario)
         function selectMountain(choice, element) {
             choiceMountain = choice;
-            // Rimuove la selezione da tutti i giorni del calendario
             document.querySelectorAll('.cal-day').forEach(btn => btn.classList.remove('selected'));
             element.classList.add('selected');
             document.getElementById('extra-montagna').value = '';
@@ -476,37 +556,14 @@
 
         function handleMountainExtra(val) {
             choiceMountain = val || "Da decidere";
-            // Deseleziona il calendario se inizia a scrivere
             document.querySelectorAll('.cal-day').forEach(btn => btn.classList.remove('selected'));
         }
 
-        // MOSTRA RIEPILOGO FINALE
         function mostraRiepilogo() {
             document.getElementById('summary-cinema').innerText = choiceCinema;
             document.getElementById('summary-mountain').innerText = choiceMountain;
-            goToStep('step-riepilogo', '#e8eaf6');
+            goToStep('step-riepilogo');
         }
-
-        // LOGICA EMOJI FLUTTUANTI A TEMA
-        const emojis = ['🍿', '⛰️', '🎬', '🥾'];
-        
-        function createEmoji() {
-            const emojiEl = document.createElement('div');
-            emojiEl.classList.add('emoji');
-            emojiEl.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            emojiEl.style.left = Math.random() * 100 + 'vw';
-            
-            const duration = Math.random() * 4 + 4;
-            emojiEl.style.animationDuration = duration + 's';
-            
-            const size = Math.random() * 20 + 25;
-            emojiEl.style.fontSize = size + 'px';
-            
-            document.body.appendChild(emojiEl);
-            setTimeout(() => { emojiEl.remove(); }, duration * 1000);
-        }
-
-        setInterval(createEmoji, 250);
     </script>
 
 </body>
